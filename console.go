@@ -26,11 +26,13 @@ type javaprocm struct {
 	cmd *exec.Cmd
 }
 
-// make some changes so we can tee the output from stream
 type Console struct {
 	Cmd    *exec.Cmd
 	stdout *bufio.Reader
 	stdin  *bufio.Writer
+	// Experemintal features may cause some issues
+	tee       *io.Reader
+	dupBuffer *bytes.Buffer
 }
 
 func (p *javaprocm) Stdout() (r io.ReadCloser) {
@@ -91,9 +93,12 @@ func (c *Console) ExecCommand(command string) (err error) {
 
 func (c *Console) ReadLine() (s string, err error) {
 	s, err = c.stdout.ReadString('\n')
+	ioReader := io.TeeReader(c.stdout, c.dupBuffer)
+	c.tee = &ioReader
 	return
 }
 
+// TODO : Depricate this
 func (c *Console) ReadLineAndRespond() (s string, err error) {
 	s, err = c.stdout.ReadString('\n')
 	var x bytes.Buffer
