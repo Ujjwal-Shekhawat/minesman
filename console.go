@@ -123,6 +123,16 @@ func ServerCommand(w http.ResponseWriter, r *http.Request) {
 
 	Xonsole.ExecCommand(command)
 
+	/* for {
+		if x, err := Xonsole.ReadLine(); err != io.EOF {
+			_ = x //fmt.Println(x)
+			fmt.Println(err)
+		} else {
+			fmt.Println("Shoud break now")
+			break
+		}
+	} */
+
 	resp := struct {
 		Message string `json:"message"`
 	}{Message: command}
