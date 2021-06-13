@@ -20,6 +20,20 @@
       socket.emit('notice', message);
     }
 
+    socket.io.on('connect_error', function(err) {
+        // handle server error here
+        console.log('Error connecting to server');
+    });
+
+    socket.onmessage = (msg) => {
+        // console.log(msg.data)
+        let parElement = document.getElementById("logs");
+        let textToAdd = document.createTextNode(msg.data);
+        let br = document.createElement("br");
+        parElement.appendChild(textToAdd);
+        parElement.appendChild(br);
+    }
+
     socket.on('reply', (msg) => {
       console.log(msg);
     })

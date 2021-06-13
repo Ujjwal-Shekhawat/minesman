@@ -23,7 +23,7 @@
         
         socket.onclose = event => {
             console.log("Socket Closed Connection: ", event);
-            socket.send("Client Closed!")
+            socket.send("Client Closed!");
         };
 
         /* socket.onerror = error => {
@@ -34,7 +34,7 @@
           // console.log(msg.data)
           let parElement = document.getElementById("logs");
           let textToAdd = document.createTextNode(msg.data);
-          let br = document.createElement("br")
+          let br = document.createElement("br");
           parElement.appendChild(textToAdd);
           parElement.appendChild(br);
         }
@@ -46,7 +46,7 @@
 
         function sendMessage() {
           let command = document.getElementById("command").value;
-          console.log(command)
+          console.log(command);
           socket.send(command);
         }
 
