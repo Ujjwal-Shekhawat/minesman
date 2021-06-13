@@ -26,9 +26,9 @@
             socket.send("Client Closed!")
         };
 
-        socket.onerror = error => {
+        /* socket.onerror = error => {
             console.log("Socket Error: ", error);
-        };
+        }; */
 
         socket.onmessage = (msg) => {
           // console.log(msg.data)
@@ -38,6 +38,11 @@
           parElement.appendChild(textToAdd);
           parElement.appendChild(br);
         }
+
+        socket.io.on('connect_error', function(err) {
+          // handle server error here
+          console.log('Error connecting to server');
+        });
 
         function sendMessage() {
           let command = document.getElementById("command").value;

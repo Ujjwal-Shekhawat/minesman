@@ -1,22 +1,24 @@
 package main
 
 import (
-	"encoding/json"
 	"fmt"
 	"io"
 	"log"
 	"net/http"
 	"os"
 
-	"github.com/gorilla/websocket"
+	socketio "github.com/googollee/go-socket.io"
+	"github.com/googollee/go-socket.io/engineio"
+	"github.com/googollee/go-socket.io/engineio/transport"
+	"github.com/googollee/go-socket.io/engineio/transport/polling"
+	"github.com/googollee/go-socket.io/engineio/transport/websocket"
 )
 
-var upgrader = websocket.Upgrader{
-	ReadBufferSize:  1024,
-	WriteBufferSize: 1024,
-}
-
 var Xonsole = InitConsole()
+
+var allowOriginFunc = func(r *http.Request) bool {
+	return true
+}
 
 func main() {
 	// Server
@@ -27,9 +29,66 @@ func main() {
 		port = "8080"
 	}
 	go app.run(port)
-	app.Router.HandleFunc("/ws", wsConnection).Methods("GET")
 
 	// Socker Server
+	server := socketio.NewServer(&engineio.Options{
+		Transports: []transport.Transport{
+			&polling.Transport{
+				CheckOrigin: allowOriginFunc,
+			},
+			&websocket.Transport{
+				CheckOrigin: allowOriginFunc,
+			},
+		},
+	})
+	server.OnConnect("/", func(s socketio.Conn) error {
+		s.SetContext("")
+		log.Println("connected:", s.ID())
+		// Change this to be like rff or something else
+		go func() {
+			for {
+				if x, err := Xonsole.ReadLine(); err != io.EOF {
+					fmt.Println(x)
+					s.Emit("reply", x)
+				}
+			}
+		}()
+		return nil
+	})
+
+	server.OnEvent("/", "notice", func(s socketio.Conn, msg string) {
+		log.Println("notice:", msg)
+		s.Emit("reply", "Executing command :  "+msg)
+		Xonsole.ExecCommand(msg)
+	})
+
+	server.OnEvent("/chat", "msg", func(s socketio.Conn, msg string) string {
+		s.SetContext(msg)
+		return "recv " + msg
+	})
+
+	server.OnEvent("/", "bye", func(s socketio.Conn) string {
+		last := s.Context().(string)
+		s.Emit("bye", last)
+		s.Close()
+		return last
+	})
+
+	server.OnError("/", func(s socketio.Conn, e error) {
+		log.Println("meet error:", e)
+	})
+
+	server.OnDisconnect("/", func(s socketio.Conn, reason string) {
+		log.Println("closed", reason)
+	})
+
+	go func() {
+		if err := server.Serve(); err != nil {
+			log.Fatalf("socketio listen error: %s\n", err)
+		}
+	}()
+	defer server.Close()
+	app.Router.Handle("/socket.io/", server)
 
 	// Console
 	fmt.Println("Yo")
@@ -48,53 +107,4 @@ func main() {
 	for {
 	}
 
-}
-
-func reader(reader *websocket.Conn) {
-	for {
-		mess, p, err := reader.ReadMessage()
-		if err != nil {
-			fmt.Println(err)
-			return
-		}
-		// Client message here
-		fmt.Println(string(p))
-		if string(p) != "" {
-			Xonsole.ExecCommand(string(p))
-		}
-
-		if err := reader.WriteMessage(mess, p); err != nil {
-			fmt.Println(err)
-			return
-		}
-	}
-}
-
-func wsConnection(w http.ResponseWriter, r *http.Request) {
-	upgrader.CheckOrigin = func(r *http.Request) bool { return true }
-	ws, err := upgrader.Upgrade(w, r, nil)
-	if err != nil {
-		json.NewEncoder(w).Encode(struct{ M string }{"Socket conn upgrade failed"})
-	}
-	log.Println("A new client connected")
-
-	go func(ws *websocket.Conn) {
-		for {
-			if x, err := Xonsole.ReadLine(); err != io.EOF {
-				fmt.Println(x)
-				err = ws.WriteMessage(1, []byte(x))
-				if err != nil {
-					log.Println("unable to write message")
-					break
-				}
-			}
-		}
-		return
-	}(ws)
-	err = ws.WriteMessage(1, []byte("Hello from Server"))
-	if err != nil {
-		log.Fatal("unable to write message")
-	}
-
-	reader(ws)
 }

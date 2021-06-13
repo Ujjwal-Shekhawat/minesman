@@ -121,7 +121,7 @@ func ServerCommand(w http.ResponseWriter, r *http.Request) {
 	params := mux.Vars(r)
 	command := params["command"]
 
-	Xonsole.ExecCommand(command)
+	// Xonsole.ExecCommand(command)
 
 	/* for {
 		if x, err := Xonsole.ReadLine(); err != io.EOF {

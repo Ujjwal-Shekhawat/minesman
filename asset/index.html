@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <script src="https://cdn.socket.io/socket.io-1.2.0.js"></script>
+  <title>Document</title>
+</head>
+<body>
+  <p id="para"></p>
+  <input type="text" placeholder="message" id="msgFeild">
+  <button onclick="sendMessage()">Send</button>
+  <script>
+    let socket = io();
+    
+    function sendMessage() {
+      let message = document.getElementById("msgFeild").value;
+      console.log(message);
+      socket.emit('notice', message);
+    }
+
+    socket.on('reply', (msg) => {
+      console.log(msg);
+    })
+
+  </script>
+</body>
+</html>
