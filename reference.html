@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Go WebSocket Tutorial</title>
+  </head>
+  <body>
+    <h2>MINESMAN (PRE ALPHA)</h2>
+    <input type="text" placeholder="command" id="command">
+    <button onclick="sendMessage()">Click Me</button>
+    <p id="logs"></p>
+
+    <script>
+        let socket = new WebSocket("ws://127.0.0.1:8080/ws");
+        console.log("Attempting Connection...");
+
+        socket.onopen = () => {
+            console.log("Successfully Connected");
+            // socket.send("Hi From the Client!")
+        };
+        
+        socket.onclose = event => {
+            console.log("Socket Closed Connection: ", event);
+            socket.send("Client Closed!");
+        };
+
+        /* socket.onerror = error => {
+            console.log("Socket Error: ", error);
+        }; */
+
+        socket.onmessage = (msg) => {
+          // console.log(msg.data)
+          let parElement = document.getElementById("logs");
+          let textToAdd = document.createTextNode(msg.data);
+          let br = document.createElement("br");
+          parElement.appendChild(textToAdd);
+          parElement.appendChild(br);
+        }
+
+        socket.io.on('connect_error', function(err) {
+          // handle server error here
+          console.log('Error connecting to server');
+        });
+
+        function sendMessage() {
+          let command = document.getElementById("command").value;
+          console.log(command);
+          socket.send(command);
+        }
+
+    </script>
+  </body>
+</html>
