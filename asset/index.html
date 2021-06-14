@@ -14,7 +14,7 @@
   <button onclick="reconnect()">Reconnect</button>
 
   <script>
-    let socket = io();
+    let socket = io("/");
     
     function sendMessage() {
       let message = document.getElementById("msgFeild").value;
