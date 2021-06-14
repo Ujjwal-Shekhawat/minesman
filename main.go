@@ -17,6 +17,7 @@ import (
 var Xonsole = InitConsole()
 
 var allowOriginFunc = func(r *http.Request) bool {
+	// Cors (*)
 	return true
 }
 
@@ -95,14 +96,6 @@ func main() {
 	if Xonsole.Cmd.Start() != nil {
 		log.Fatal("Cannot start server")
 	}
-
-	/* go func() {
-		for {
-			if x, err := Xonsole.ReadLine(); err != io.EOF {
-				fmt.Println(x)
-			}
-		}
-	}() */
 
 	for {
 	}
