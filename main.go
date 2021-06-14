@@ -6,6 +6,7 @@ import (
 	"log"
 	"net/http"
 	"os"
+	"time"
 
 	socketio "github.com/googollee/go-socket.io"
 	"github.com/googollee/go-socket.io/engineio"
@@ -22,6 +23,16 @@ var allowOriginFunc = func(r *http.Request) bool {
 }
 
 func main() {
+	// Console
+	fmt.Println("Yo")
+	if Xonsole.Cmd.Start() != nil {
+		log.Fatal("Cannot start server")
+	}
+
+	serveAll()
+}
+
+func serveAll() {
 	// Server
 	port := os.Getenv("PORT")
 	app := App{}
@@ -60,7 +71,15 @@ func main() {
 	server.OnEvent("/", "notice", func(s socketio.Conn, msg string) {
 		log.Println("notice:", msg)
 		s.Emit("reply", "Executing command :  "+msg)
-		Xonsole.ExecCommand(msg)
+		if msg == "restart" {
+			Xonsole.ExecCommand("stop")
+			time.Sleep(5 * time.Second)
+			Xonsole.Cmd.Process.Kill()
+			Xonsole = InitConsole()
+			Xonsole.Cmd.Start()
+		} else {
+			Xonsole.ExecCommand(msg)
+		}
 	})
 
 	server.OnEvent("/chat", "msg", func(s socketio.Conn, msg string) string {
@@ -91,13 +110,6 @@ func main() {
 	defer server.Close()
 	app.Router.Handle("/socket.io/", server)
 
-	// Console
-	fmt.Println("Yo")
-	if Xonsole.Cmd.Start() != nil {
-		log.Fatal("Cannot start server")
-	}
-
 	for {
 	}
-
 }
