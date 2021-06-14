@@ -23,7 +23,10 @@
     }
 
     function reconnect() {
-      socket.connect();
+      if(socket.disconnected) {
+        socket.connect();
+        console.log("Reconnected")
+      }
     }
 
     /* socket.io.on('connect_error', function(err) {
@@ -32,6 +35,8 @@
     }); */
     socket.on('connect_error', (err) => {
         console.log('Error connecting to server');
+        console.clear();
+        console.log(socket);
         socket.disconnect();
     })
 
