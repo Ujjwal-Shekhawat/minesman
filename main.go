@@ -15,7 +15,13 @@ import (
 	"github.com/googollee/go-socket.io/engineio/transport/websocket"
 )
 
-var Xonsole = InitConsole()
+var Xonsole *Console
+
+// Now working
+var socketConnections struct {
+	s   socketio.Conn
+	sID string
+}
 
 var allowOriginFunc = func(r *http.Request) bool {
 	// Cors (*)
@@ -24,6 +30,7 @@ var allowOriginFunc = func(r *http.Request) bool {
 
 func main() {
 	// Console
+	Xonsole = InitConsole()
 	fmt.Println("Yo")
 	if Xonsole.Cmd.Start() != nil {
 		log.Fatal("Cannot start server")
@@ -62,6 +69,7 @@ func serveAll() {
 				if x, err := Xonsole.ReadLine(); err != io.EOF {
 					fmt.Println(x)
 					s.Emit("reply", x)
+				} else {
 				}
 			}
 		}()
@@ -75,6 +83,7 @@ func serveAll() {
 			Xonsole.ExecCommand("stop")
 			time.Sleep(5 * time.Second)
 			Xonsole.Cmd.Process.Kill()
+			// Xonsole = nil Dont know but this line causes memory error
 			Xonsole = InitConsole()
 			Xonsole.Cmd.Start()
 		} else {
@@ -82,10 +91,10 @@ func serveAll() {
 		}
 	})
 
-	server.OnEvent("/chat", "msg", func(s socketio.Conn, msg string) string {
+	/* server.OnEvent("/", "msg", func(s socketio.Conn, msg string) string {
 		s.SetContext(msg)
 		return "recv " + msg
-	})
+	}) */
 
 	server.OnEvent("/", "bye", func(s socketio.Conn) string {
 		last := s.Context().(string)
