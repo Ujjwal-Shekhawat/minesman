@@ -11,6 +11,7 @@
   <p id="para"></p>
   <input type="text" placeholder="message" id="msgFeild">
   <button onclick="sendMessage()">Send</button>
+  <button onclick="reconnect()">Reconnect</button>
 
   <script>
     let socket = io();
@@ -21,21 +22,18 @@
       socket.emit('notice', message);
     }
 
+    function reconnect() {
+      socket.connect();
+    }
+
     /* socket.io.on('connect_error', function(err) {
         // handle server error here
         console.log('Error connecting to server');
     }); */
-    socket.io.on('connection_error', (err) => {
+    socket.on('connect_error', (err) => {
         console.log('Error connecting to server');
+        socket.disconnect();
     })
-    /* socket.onmessage = (msg) => {
-        // console.log(msg.data)
-        let parElement = document.getElementById("logs");
-        let textToAdd = document.createTextNode(msg.data);
-        let br = document.createElement("br");
-        parElement.appendChild(textToAdd);
-        parElement.appendChild(br);
-    } */
 
     socket.on('reply', (msg) => {
       console.log(msg);
