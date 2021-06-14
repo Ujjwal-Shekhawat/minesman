@@ -17,11 +17,7 @@ import (
 
 var Xonsole *Console
 
-// Now working
-var socketConnections struct {
-	s   socketio.Conn
-	sID string
-}
+var socketConns *map[string]socketio.Conn = &map[string]socketio.Conn{}
 
 var allowOriginFunc = func(r *http.Request) bool {
 	// Cors (*)
@@ -60,11 +56,14 @@ func serveAll() {
 			},
 		},
 	})
+
+	go handlesocketConns(socketConns)
+
 	server.OnConnect("/", func(s socketio.Conn) error {
 		s.SetContext("")
 		log.Println("connected:", s.ID())
 		// Change this to be like rff or something else
-		go func() {
+		/* go func() {
 			for {
 				if x, err := Xonsole.ReadLine(); err != io.EOF {
 					fmt.Println(x)
@@ -72,7 +71,8 @@ func serveAll() {
 				} else {
 				}
 			}
-		}()
+		}() */
+		(*socketConns)[s.ID()] = s
 		return nil
 	})
 
@@ -108,6 +108,8 @@ func serveAll() {
 	})
 
 	server.OnDisconnect("/", func(s socketio.Conn, reason string) {
+		delete(*socketConns, s.ID())
+		log.Println("Socket conn closed by client" + s.ID())
 		log.Println("closed", reason)
 	})
 
@@ -120,5 +122,17 @@ func serveAll() {
 	app.Router.Handle("/socket.io/", server)
 
 	for {
+	}
+}
+
+func handlesocketConns(sockets *map[string]socketio.Conn) {
+	for {
+		if x, err := Xonsole.ReadLine(); err != io.EOF {
+			fmt.Println(x, " ", len(*sockets))
+			for _, value := range *sockets {
+				value.Emit("reply", x)
+			}
+		} else {
+		}
 	}
 }
