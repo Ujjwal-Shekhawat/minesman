@@ -14,8 +14,9 @@
     @import url('https://fonts.googleapis.com/css?family=Ubuntu+Mono');
 
     body {
-      background: linear-gradient(45deg, #57003f 0%, #f57453 100%);
+      /* background: linear-gradient(45deg, #57003f 0%, #f57453 100%); */
       font-family: Ubuntu;
+      background-image: url("https://i.pinimg.com/originals/09/24/4c/09244c7f7dd4d17b0484370f32db6641.gif?q=60");
     }
 
     #container {
@@ -26,9 +27,9 @@
     }
 
     #terminal {
-      width: 100vw;
-      height: 100vh;
-      box-shadow: 2px 4px 10px rgba(0, 0, 0, 0.5);
+      width: 85vw;
+      height: 70vh;
+      box-shadow: 2px 4px 10px rgb(0, 0, 0);
     }
 
     #terminal__bar {
@@ -86,7 +87,7 @@
     }
 
     #terminal__body {
-      background: rgba(56, 4, 40, 0.9);
+      background: rgba(0, 0, 0, 0.644);
       font-family: 'Ubuntu Mono';
       height: calc(100% - 30px);
       padding-top: 2px;
@@ -95,6 +96,7 @@
 
     #terminal__prompt {
       display: flex;
+      font-size: 200%;
     }
 
     #terminal__prompt--user {
@@ -111,8 +113,8 @@
 
     #terminal__prompt--cursor {
       display: block;
-      height: 17px;
-      width: 8px;
+      height: 17*2px;
+      width: 14px;
       margin-left: 9px;
       animation: blink 1200ms linear infinite;
     }
