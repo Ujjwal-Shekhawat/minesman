@@ -3,11 +3,9 @@
 
 <head>
   <meta charset="utf-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <title>Ubuntu Terminal</title>
+  <title>Spex MC Server</title>
   <meta name="description" content="">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <!-- <link rel="stylesheet" type="text/css" href="/asset/style.css"/> -->
   <script src="https://cdn.socket.io/socket.io-1.2.0.js"></script>
   <style>
     @import url('https://fonts.googleapis.com/css?family=Ubuntu');
@@ -98,19 +96,23 @@
 
     #terminal__prompt {
       display: flex;
-      font-size: 100%;
+      font-size: 150%;
+      white-space: pre;
     }
 
     #terminal__prompt--user {
       color: #7eda28;
+      font-weight: bold;
     }
 
     #terminal__prompt--location {
       color: #4878c0;
+      font-weight: bold;
     }
 
     #terminal__prompt--bling {
       color: #dddddd;
+      text-overflow: ellipsis;
     }
 
     #terminal__prompt--cursor {
@@ -174,26 +176,28 @@
   <main id="container">
     <div id="terminal" style="overflow: scroll; overflow-x: hidden;">
       <!-- Terminal Bar -->
-      <section id="terminal__bar">
+      <!-- <section id="terminal__bar">
         <div id="bar__buttons">
           <button class="bar__button" id="bar__button--exit">&#10005;</button>
           <button class="bar__button" onclick="reconnect()">&#x21bb;</button>
           <button class="bar__button">&#9723;</button>
         </div>
         <p id="bar__user">spex@opcarm64-restricted: ~</p>
-      </section>
+      </section> -->
       <!-- Terminal Body -->
       <section id="terminal__body">
         <div id="terminal__prompt">
           <span id="terminal__prompt--user">spex@opcarm64:</span>
           <span id="terminal__prompt--location">~</span>
           <span id="terminal__prompt--bling">$</span>
-          <span id="terminal__prompt--cursor" style="color: greenyellow;">lamo</span>
+          <span id="terminal__prompt--cursor" style="color: greenyellow;">lmao</span>
         </div>
       </section>
-      <div id='terminal__prompt'>
+      <div id='terminal__prompt' style="overflow-wrap: break-word;">
+        <label
+          style="color: transparent; width: auto;background: rgba(0, 0, 0, 0.644); color: greenyellow; border-color: transparent; border: thin; outline: transparent; font-family: 'Ubuntu Mono'; font-size: 100%; font-weight: bold;">spex@opcarm64: <span style="color: lightblue; font-weight: normal;">~ </span><span style="color: white;" font-weight: normal;>$ </span></label>
         <input id="commandBox" type="text" placeholder="command"
-          style="color: transparent; width: 100%;background: rgba(0, 0, 0, 0.644); color: greenyellow;">
+          style="color: transparent; width: 100%;background: rgba(0, 0, 0, 0.644); color: greenyellow; border-color: transparent; border: thin; outline: transparent; font-family: 'Ubuntu Mono'; font-size: 100%;" autofocus>
       </div>
     </div>
   </main>
@@ -215,10 +219,6 @@
       }
     }
 
-    /* socket.io.on('connect_error', function(err) {
-        // handle server error here
-        console.log('Error connecting to server');
-    }); */
     socket.on('connect_error', (err) => {
       console.log('Error connecting to server');
       console.clear();
@@ -229,13 +229,31 @@
     socket.on('reply', (msg) => {
       console.log(msg);
       let section = document.getElementById("terminal__body");
+
       let div = document.createElement('div');
       div.id = "terminal__prompt";
       let span = document.createElement('span');
       span.id = "terminal__prompt--user"
+      span.innerText = "spex@opcarm64: "
+      div.append(span)
+
+      span = document.createElement('span');
+      span.id = "terminal__prompt--location"
+      span.innerText = "~ "
+      div.append(span)
+
+      span = document.createElement('span');
+      span.id = "terminal__prompt--bling"
+      span.innerText = "$ "
+      div.append(span)
+
+      span = document.createElement('span');
+      span.id = "terminal__prompt--bling"
       span.innerText = msg
+      span.style.color = "white"
       div.append(span)
       section.append(div)
+
       updateScroll()
     })
 
