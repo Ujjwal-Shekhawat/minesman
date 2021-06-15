@@ -96,7 +96,7 @@
 
     #terminal__prompt {
       display: flex;
-      font-size: 200%;
+      font-size: 100%;
     }
 
     #terminal__prompt--user {
@@ -113,8 +113,8 @@
 
     #terminal__prompt--cursor {
       display: block;
-      height: 17*2px;
-      width: 14px;
+      height: 17px;
+      width: 8px;
       margin-left: 9px;
       animation: blink 1200ms linear infinite;
     }
@@ -168,7 +168,7 @@
           <span id="terminal__prompt--user">spex@opcarm64:</span>
           <span id="terminal__prompt--location">~</span>
           <span id="terminal__prompt--bling">$</span>
-          <span id="terminal__prompt--cursor" style="color: greenyellow;">lmao</span>
+          <span id="terminal__prompt--cursor" style="color: greenyellow;">lamo</span>
         </div>
       </section>
     </div>
@@ -202,6 +202,14 @@
 
     socket.on('reply', (msg) => {
       console.log(msg);
+      let section = document.getElementById("terminal__body");
+      let div = document.createElement('div');
+      div.id = "terminal__prompt";
+      let span = document.createElement('span');
+      span.id = "terminal__prompt--user"
+      span.innerText = msg
+      div.append(span)
+      section.append(div)
     })
 
   </script>
