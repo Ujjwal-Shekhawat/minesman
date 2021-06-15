@@ -72,6 +72,8 @@ func serveAll() {
 				}
 			}
 		}() */
+		s.Emit("reply", "Successfully Connected 😀")
+		s.Emit("reply", "Successfully Connected 😀")
 		(*socketConns)[s.ID()] = s
 		return nil
 	})
