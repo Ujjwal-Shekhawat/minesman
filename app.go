@@ -40,7 +40,7 @@ func logger(handler http.HandlerFunc) http.HandlerFunc {
 func (app *App) initRoutes() {
 	app.Router = mux.NewRouter()
 	app.Router.HandleFunc("/{command}", ServerCommand).Methods("POST")
-	app.Router.Handle("/", http.FileServer(http.Dir("./asset")))
+	// app.Router.Handle("/", http.FileServer(http.Dir("./asset")))
 }
 
 func (app *App) run(port string) {
