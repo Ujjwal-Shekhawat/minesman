@@ -11,7 +11,6 @@ import (
 	socketio "github.com/googollee/go-socket.io"
 	"github.com/googollee/go-socket.io/engineio"
 	"github.com/googollee/go-socket.io/engineio/transport"
-	"github.com/googollee/go-socket.io/engineio/transport/polling"
 	"github.com/googollee/go-socket.io/engineio/transport/websocket"
 )
 
@@ -48,9 +47,6 @@ func serveAll() {
 	// Socker Server
 	server := socketio.NewServer(&engineio.Options{
 		Transports: []transport.Transport{
-			&polling.Transport{
-				CheckOrigin: allowOriginFunc,
-			},
 			&websocket.Transport{
 				CheckOrigin: allowOriginFunc,
 			},
