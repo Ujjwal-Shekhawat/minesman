@@ -1,3 +1,6 @@
 serverfiles/*
 serverlogs.txt
 sw
+/client/node_modules
+/client/minesmanfrontend/node_modules
+/client
