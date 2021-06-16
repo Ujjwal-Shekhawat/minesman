@@ -89,8 +89,9 @@ func serveAll() {
 			// TODO : maybe check for eof then decrement waitgroup and terminate the loop and exit gracefully
 			time.Sleep(5 * time.Second)
 			Xonsole.Cmd.Process.Kill()
-			s.Emit("server_shutdown", "Shutting down server disconnected")
-			return
+			s.Emit("reply", "Shutting down server disconnected contact admin if you need to restart")
+			s.Emit("reply", "PS: In future you will be able to start this server from browser only")
+			os.Exit(0)
 		} else {
 			Xonsole.ExecCommand(msg)
 
@@ -139,6 +140,7 @@ func handlesocketConns(sockets *map[string]socketio.Conn) {
 				value.Emit("reply", x)
 			}
 		} else {
+			fmt.Println(err)
 		}
 	}
 }
