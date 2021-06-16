@@ -84,8 +84,16 @@ func serveAll() {
 			// Xonsole = nil Dont know but this line causes memory error
 			Xonsole = InitConsole()
 			Xonsole.Cmd.Start()
+		} else if msg == "stop" {
+			Xonsole.ExecCommand("stop")
+			// TODO : maybe check for eof then decrement waitgroup and terminate the loop and exit gracefully
+			time.Sleep(5 * time.Second)
+			Xonsole.Cmd.Process.Kill()
+			s.Emit("server_shutdown", "Shutting down server disconnected")
+			return
 		} else {
 			Xonsole.ExecCommand(msg)
+
 		}
 	})
 
