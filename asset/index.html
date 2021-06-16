@@ -202,7 +202,7 @@
     </div>
   </main>
   <script>
-    let socket = io("/");
+    let socket = io("/", {transports: ["websocket"]});
 
     function sendMessage() {
       let message = document.getElementById("commandBox");
@@ -222,7 +222,7 @@
     socket.on('connect_error', (err) => {
       console.log('Error connecting to server');
       console.clear();
-      console.log(socket);
+      console.log(err);
       socket.disconnect();
     })
 
