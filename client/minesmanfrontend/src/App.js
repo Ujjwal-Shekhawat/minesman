@@ -8,16 +8,8 @@ function App() {
     overflowX: 'hidden'
   };
 
+  let socket = X();
   useEffect(() => {
-    let socket = X();
-
-    function sendMessage() {
-      let message = document.getElementById("commandBox");
-      console.log(message.value);
-      socket.emit('notice', message.value);
-      message.value = ""
-
-    }
 
     function reconnect() {
       if (socket.disconnected) {
@@ -72,20 +64,14 @@ function App() {
       let element = document.getElementById("terminal");
       element.scrollTop = element.scrollHeight;
     }
-
-    document.addEventListener("DOMContentLoaded", () => {
-      let commandInput = document.getElementById("commandBox")
-      commandInput.addEventListener('keydown', (k) => {
-        if (k.code === "Enter") {
-          sendMessage();
-        }
-      })
-    })
   });
 
-  const x = (event) => {
-    if (event.keyCode === 13) {
-      console.log("LOL")
+  const sendCommand = (event) => {
+    if (event.code === "Enter") {
+      let message = document.getElementById("commandBox");
+      console.log(message.value);
+      socket.emit('notice', message.value);
+      message.value = ""
     }
   }
 
@@ -100,7 +86,7 @@ function App() {
           <div id='terminal__prompt'>
             <label
               style={{ color: "transparent", width: "auto", background: "rgba(0, 0, 0, 0.644)", color: "greenyellow", borderColor: "transparent", border: "thin", outline: "transparent", fontFamily: 'Ubuntu Mono', fontSize: "100%", fontWeight: "bold" }}>spex@opcarm64: <span style={{ color: "lightblue", fontWeight: "normal", }}>~ </span><span style={{ color: "white", fontWeight: "normal" }}>$ </span></label>
-            <input id="commandBox" type="text" placeholder="command" autoFocus />
+            <input id="commandBox" type="text" placeholder="command" autoFocus onKeyDown={sendCommand} />
           </div>
         </div>
       </main>
