@@ -126,7 +126,7 @@ func serveAll() {
 		}
 	}()
 	defer server.Close()
-	app.Router.Handle("/socket.io/", server)
+	app.Router.Handle("/ws/", server)
 
 	for {
 	}
