@@ -1,6 +1,6 @@
-serverfiles/*
-serverlogs.txt
-sw
+server/serverfiles/*
+server/serverlogs.txt
+server/sw
 /client/node_modules
 /client/minesmanfrontend/node_modules
 /client/minesmanfrontend/build
