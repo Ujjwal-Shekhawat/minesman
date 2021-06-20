@@ -23,6 +23,7 @@ var allowOriginFunc = func(r *http.Request) bool {
 	return true
 }
 
+// TODO : Make a log parser
 func main() {
 	// Console
 	Xonsole = InitConsole()

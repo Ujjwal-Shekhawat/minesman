@@ -61,7 +61,7 @@ func execCommand(spath string, minHeap, maxHeap int) *javaprocm {
 }
 
 func InitConsole() *Console {
-	cmd := execCommand("server.jar", 2048, 10240)
+	cmd := execCommand("server.jar", 2048, 6000)
 	console := &Console{Cmd: cmd.cmd}
 	console.stdout = bufio.NewReader(cmd.Stdout())
 	console.stdin = bufio.NewWriter(cmd.Stdin())
