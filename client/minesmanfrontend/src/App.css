@@ -23,6 +23,8 @@
       width: 99vw;
       height: 98vh;
       box-shadow: 2px 4px 10px rgb(72, 248, 2);
+      margin-top: 1vh;
+      margin-bottom: 10vh;
     }
 
     #terminal__bar {
