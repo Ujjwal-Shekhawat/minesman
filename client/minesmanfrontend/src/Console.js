@@ -20,7 +20,8 @@ function Console() {
 
     let socket = X();
     useEffect(() => {
-        if (isAuth && username != null) {
+        // authUser()
+        if (isAuth) {
             function reconnect() {
                 if (socket.disconnected) {
                     socket.connect();
@@ -65,7 +66,7 @@ function Console() {
                 element.scrollTop = element.scrollHeight;
             }
         }
-    });
+    }, [isAuth]);
 
     const sendCommand = (event) => {
         if (event.code === "Enter") {
@@ -91,7 +92,7 @@ function Console() {
 
     return (
         <div>
-            { (isAuth == true && username != null) ? <div style={bgStyle}>
+            { (isAuth == true) ? <div style={bgStyle}>
                 <main id="container">
                     <div id="terminal" style={wrapStyle}>
                         <section id="terminal__body">
