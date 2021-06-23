@@ -6,6 +6,7 @@ import (
 	"net/http"
 
 	"github.com/gorilla/mux"
+	"github.com/gorilla/handlers"
 )
 
 // export App
@@ -46,5 +47,5 @@ func (app *App) initRoutes() {
 
 func (app *App) run(port string) {
 	fmt.Println("Server started on port : " + port)
-	log.Fatal(http.ListenAndServe(":"+port, app.Router))
+	log.Fatal(http.ListenAndServe(":"+port, handlers.CORS(handlers.AllowedOrigins([]string{"*"}), handlers.AllowedMethods([]string{"*"}))(app.Router)))
 }
