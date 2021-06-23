@@ -18,11 +18,11 @@ function Console() {
     const authCtx = useContext(authContext)
     const { isAuth, authUser, username, logout } = authCtx
 
-    if (isAuth) { X() }
+    if (isAuth && socket == null) { X() }
 
     useEffect(() => {
         // authUser()
-        /* if (isAuth && socket != null) {
+        if (isAuth && socket != null) {
             function reconnect() {
                 if (socket.disconnected) {
                     socket.connect();
@@ -65,8 +65,8 @@ function Console() {
             function updateScroll() {
                 let element = document.getElementById("terminal");
                 element.scrollTop = element.scrollHeight;
-            } */
-        // }
+            }
+        }
     }, []);
 
     const sendCommand = (event) => {
@@ -78,10 +78,10 @@ function Console() {
         } */
     }
 
-    const Disconnect = () => {
+    /* const Disconnect = () => {
         if (socket != null) { socket.emit('bye', "bye"); socket.close() }
         logout()
-    }
+    } */
 
     const changeBg = () => {
         let randNum = [Math.floor(Math.random() * bgImages.length)];
