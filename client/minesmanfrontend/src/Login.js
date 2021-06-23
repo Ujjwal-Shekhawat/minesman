@@ -19,6 +19,7 @@ export default function Login(props) {
             props.history.push('/console')
         } */
         authUser()
+        console.log(isAuth)
     }, [isAuth])
 
     const onChange = (e) => {

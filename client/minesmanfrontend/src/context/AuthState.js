@@ -24,6 +24,7 @@ export default function AuthState(props) {
     const authUser = async () => {
         console.log("authUser was called")
         if (localStorage.token) {
+            console.log(localStorage.token)
             setToken(localStorage.token)
         }
         try {
@@ -31,6 +32,7 @@ export default function AuthState(props) {
             dispatch({ type: 'user_authenticated', payload: result.data })
         } catch (error) {
             dispatch({ type: 'logout' })
+            console.log(error)
         }
     }
 
