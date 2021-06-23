@@ -57,7 +57,7 @@ func serveAll() {
 
 	go handlesocketConns(socketConns)
 
-	server.OnConnect("/", func(s socketio.Conn) error {
+	server.OnConnect("/connect", func(s socketio.Conn) error {
 		s.SetContext("")
 		log.Println("connected:", s.ID())
 		s.Emit("reply", "Successfully Connected 😀")
@@ -66,7 +66,7 @@ func serveAll() {
 		return nil
 	})
 
-	server.OnEvent("/", "notice", func(s socketio.Conn, msg string) {
+	server.OnEvent("/connect", "notice", func(s socketio.Conn, msg string) {
 		log.Println("notice:", msg)
 		s.Emit("reply", "Executing command :  "+msg)
 		if msg == "restart" {
@@ -90,18 +90,18 @@ func serveAll() {
 		}
 	})
 
-	server.OnEvent("/", "bye", func(s socketio.Conn) string {
+	/* server.OnEvent("/", "bye", func(s socketio.Conn) string {
 		last := s.Context().(string)
 		s.Emit("bye", last)
 		s.Close()
 		return last
-	})
+	}) */
 
-	server.OnError("/", func(s socketio.Conn, e error) {
+	server.OnError("/connect", func(s socketio.Conn, e error) {
 		log.Println("meet error:", e)
 	})
 
-	server.OnDisconnect("/", func(s socketio.Conn, reason string) {
+	server.OnDisconnect("/connect", func(s socketio.Conn, reason string) {
 		delete(*socketConns, s.ID())
 		log.Println("Socket conn closed by client" + s.ID())
 		log.Println("closed", reason)
