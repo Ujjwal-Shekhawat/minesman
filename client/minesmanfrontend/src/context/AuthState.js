@@ -27,7 +27,7 @@ export default function AuthState(props) {
             setToken(localStorage.token)
         }
         try {
-            const result = axios.get('http://localhost:8080/console')
+            const result = axios.get('http://20.197.57.10:8080/console')
             dispatch({ type: 'user_authenticated', payload: result.data })
         } catch (error) {
             dispatch({ type: 'logout' })
@@ -37,7 +37,7 @@ export default function AuthState(props) {
     const login = async (formData) => {
         const config = { headers: { "Content-Type": "application/json" } }
         try {
-            const result = await axios.post('http://localhost:8080/', formData, config)
+            const result = await axios.post('http://20.197.57.10:8080/', formData, config)
             // console.log(result.data)
             dispatch({ type: 'login_success', payload: result.data })
             authUser();
