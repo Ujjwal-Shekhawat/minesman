@@ -70,12 +70,12 @@ function Console() {
     }, []);
 
     const sendCommand = (event) => {
-        /* if (event.code === "Enter") {
+        if (event.code === "Enter") {
             let message = document.getElementById("commandBox");
             console.log(message.value);
             socket.emit('notice', message.value);
             message.value = ""
-        } */
+        }
     }
 
     /* const Disconnect = () => {
