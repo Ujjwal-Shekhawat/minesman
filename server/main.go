@@ -90,12 +90,13 @@ func serveAll() {
 		}
 	})
 
-	/* server.OnEvent("/", "bye", func(s socketio.Conn) string {
+	server.OnEvent("/", "bye", func(s socketio.Conn) string {
 		last := s.Context().(string)
 		s.Emit("bye", last)
 		s.Close()
+		fmt.Println("Socket Connection Closed")
 		return last
-	}) */
+	})
 
 	server.OnError("/", func(s socketio.Conn, e error) {
 		log.Println("meet error:", e)
@@ -147,6 +148,7 @@ func handlesocketConns(sockets *map[string]socketio.Conn) {
 		if x, err := Xonsole.ReadLine(); err != io.EOF {
 			// fmt.Println(x, " ", len(*sockets))
 			parselogs(x)
+			fmt.Println(len(*sockets))
 			for _, value := range *sockets {
 				value.Emit("reply", x)
 			}

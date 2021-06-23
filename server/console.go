@@ -125,7 +125,7 @@ func Login(w http.ResponseWriter, r *http.Request) {
 func AuthConsole(w http.ResponseWriter, r *http.Request) {
 	fmt.Println("Hitted Auth Endpoint")
 	fmt.Println(r.Header.Get("auth-token"))
-	w.WriteHeader(401)
+	w.WriteHeader(200)
 	json.NewEncoder(w).Encode(struct {
 		Message string `json:"message"`
 	}{Message: "Lmao"})

@@ -1,7 +1,7 @@
 import { Fragment, React, useContext, useEffect } from 'react'
 import { Redirect } from 'react-router-dom'
 import authContext from "./context/authContext"
-import X from './Socket';
+import { socket } from './Socket';
 
 function Console() {
     const wrapStyle = {
@@ -16,12 +16,8 @@ function Console() {
     ];
 
     const authCtx = useContext(authContext)
-    const { isAuth, authUser, username } = authCtx
+    const { isAuth, authUser, username, logout } = authCtx
 
-    let socket;
-    if (isAuth) {
-        socket = X();
-    }
     useEffect(() => {
         // authUser()
         if (isAuth) {
@@ -70,7 +66,7 @@ function Console() {
                 element.scrollTop = element.scrollHeight;
             }
         }
-    }, [isAuth]);
+    }, []);
 
     const sendCommand = (event) => {
         if (event.code === "Enter") {
@@ -80,6 +76,12 @@ function Console() {
             message.value = ""
         }
     }
+
+    const Disconnect = () => {
+        if (socket != null) { socket.emit('bye', "bye"); socket.close() }
+        logout()
+    }
+
     const changeBg = () => {
         let randNum = [Math.floor(Math.random() * bgImages.length)];
         return bgImages[randNum];
@@ -92,10 +94,6 @@ function Console() {
         backgroundSize: 'cover',
         overflowY: 'hidden',
         overflowX: 'hidden',
-    }
-
-    const Disconnect = () => {
-        if (socket != null) { socket.close(); }
     }
 
     return (
@@ -113,11 +111,11 @@ function Console() {
                             <input id="commandBox" type="text" placeholder="command" autoFocus onKeyDown={sendCommand} />
                         </div>
                     </div>
+                    <button onClick={Disconnect}>logoff</button>
                 </main>
             </div>
                 :
                 <Fragment>
-                    {Disconnect()}
                     <Redirect to='/' />
                 </Fragment>
             }

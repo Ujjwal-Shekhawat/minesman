@@ -5,13 +5,21 @@ import AuthState from './context/AuthState'
 import Console from './Console'
 import Navbar from './Nav'
 import Login from './Login'
+// sedoicnsdklvn
+import { X } from "./Socket"
 
 function App() {
+  useEffect(() => {
+    X();
+   /*  return () => {
+      // cleanup
+    } */
+  }, [])
   return (
     <AuthState>
+      <Navbar />
       <Router>
         <Fragment>
-          <Navbar />
           <Switch>
             <Route exact path='/' component={Login} />
             <Route exact path='/console' component={Console} />

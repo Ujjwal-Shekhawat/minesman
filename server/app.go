@@ -12,7 +12,7 @@ import (
 // Cors releted
 var header = handlers.AllowedHeaders([]string{"X-Requested-With", "Content-Type", "Authorization"})
 var methods = handlers.AllowedMethods([]string{"GET", "POST", "PUT", "HEAD", "OPTIONS"})
-var origins = handlers.AllowedOrigins([]string{"*"})
+var origins = handlers.AllowedOrigins([]string{"localhost:3000", "*"})
 
 // export App
 type App struct {
@@ -45,7 +45,7 @@ func logger(handler http.HandlerFunc) http.HandlerFunc {
 
 func (app *App) initRoutes() {
 	app.Router = mux.NewRouter()
-	app.Router.HandleFunc("/", Login).Methods("POST")
+	app.Router.HandleFunc("/", Login).Methods("POST", "OPTIONS")
 	app.Router.HandleFunc("/console", AuthConsole).Methods("GET", "OPTIONS")
 	// app.Router.Handle("/", http.FileServer(http.Dir("./asset")))
 }
