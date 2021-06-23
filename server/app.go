@@ -5,8 +5,8 @@ import (
 	"log"
 	"net/http"
 
-	"github.com/gorilla/mux"
 	"github.com/gorilla/handlers"
+	"github.com/gorilla/mux"
 )
 
 // Cors releted
@@ -46,7 +46,7 @@ func logger(handler http.HandlerFunc) http.HandlerFunc {
 func (app *App) initRoutes() {
 	app.Router = mux.NewRouter()
 	app.Router.HandleFunc("/", Login).Methods("POST")
-	app.Router.HandleFunc("/console", AuthConsole).Methods("GET")
+	app.Router.HandleFunc("/console", AuthConsole).Methods("GET", "OPTIONS")
 	// app.Router.Handle("/", http.FileServer(http.Dir("./asset")))
 }
 

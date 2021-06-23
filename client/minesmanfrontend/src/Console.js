@@ -19,10 +19,12 @@ function Console() {
     const { isAuth, authUser, username } = authCtx
 
     let socket;
+    if (isAuth) {
+        socket = X();
+    }
     useEffect(() => {
         // authUser()
         if (isAuth) {
-            socket = X();
             console.log("ggwp", isAuth)
             function reconnect() {
                 if (socket.disconnected) {
@@ -92,6 +94,10 @@ function Console() {
         overflowX: 'hidden',
     }
 
+    const Disconnect = () => {
+        if (socket != null) { socket.close(); }
+    }
+
     return (
         <div>
             { (isAuth == true) ? <div style={bgStyle}>
@@ -110,7 +116,11 @@ function Console() {
                 </main>
             </div>
                 :
-                <Redirect to='/' />}
+                <Fragment>
+                    {Disconnect()}
+                    <Redirect to='/' />
+                </Fragment>
+            }
         </div>
     )
 }
