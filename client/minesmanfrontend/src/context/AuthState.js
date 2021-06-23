@@ -31,8 +31,8 @@ export default function AuthState(props) {
             const result = await axios.get('http://20.197.57.10:8080/console')
             dispatch({ type: 'user_authenticated', payload: result.data })
         } catch (error) {
-            dispatch({ type: 'logout' })
-            console.log("auth error")
+            // dispatch({ type: 'logout' })
+            console.log("auth error", error)
         }
     }
 
@@ -42,7 +42,7 @@ export default function AuthState(props) {
             const result = await axios.post('http://20.197.57.10:8080/', formData, config)
             // console.log(result.data)
             dispatch({ type: 'login_success', payload: result.data })
-            authUser();
+            // authUser();
         } catch (error) {
             dispatch({ type: 'logout' })
         }

@@ -22,7 +22,7 @@ function Console() {
 
     useEffect(() => {
         // authUser()
-        if (isAuth) {
+        /* if (isAuth && socket != null) {
             function reconnect() {
                 if (socket.disconnected) {
                     socket.connect();
@@ -65,17 +65,17 @@ function Console() {
             function updateScroll() {
                 let element = document.getElementById("terminal");
                 element.scrollTop = element.scrollHeight;
-            }
-        }
+            } */
+        // }
     }, []);
 
     const sendCommand = (event) => {
-        if (event.code === "Enter") {
+        /* if (event.code === "Enter") {
             let message = document.getElementById("commandBox");
             console.log(message.value);
             socket.emit('notice', message.value);
             message.value = ""
-        }
+        } */
     }
 
     const Disconnect = () => {
@@ -112,7 +112,7 @@ function Console() {
                             <input id="commandBox" type="text" placeholder="command" autoFocus onKeyDown={sendCommand} />
                         </div>
                     </div>
-                    <button onClick={Disconnect}>logoff</button>
+                    {/* <button onClick={Disconnect}>logoff</button> */}
                 </main>
             </div>
                 :
