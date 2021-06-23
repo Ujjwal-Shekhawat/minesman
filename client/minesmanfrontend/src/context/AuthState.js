@@ -14,7 +14,7 @@ const setToken = (token) => {
 export default function AuthState(props) {
     const initState = {
         token: localStorage.getItem('token'),
-        isAuth: null,
+        isAuth: false,
         username: null,
         error: null,
     }

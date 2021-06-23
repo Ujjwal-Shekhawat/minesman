@@ -18,10 +18,12 @@ function Console() {
     const authCtx = useContext(authContext)
     const { isAuth, authUser, username } = authCtx
 
-    let socket = X();
+    let socket;
     useEffect(() => {
         // authUser()
         if (isAuth) {
+            socket = X();
+            console.log("ggwp", isAuth)
             function reconnect() {
                 if (socket.disconnected) {
                     socket.connect();
