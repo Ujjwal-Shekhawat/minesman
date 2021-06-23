@@ -7,7 +7,7 @@ import Console from './Console'
 import Navbar from './Nav'
 import Login from './Login'
 // sedoicnsdklvn
-import { X } from "./Socket"
+// import { X } from "./Socket"
 
 function App() {
 
@@ -15,7 +15,7 @@ function App() {
   const { isAuth } = authCtx
 
   useEffect(() => {
-    if (isAuth) { X(); }
+    // if (isAuth) { X(); }
     /*  return () => {
        // cleanup
      } */

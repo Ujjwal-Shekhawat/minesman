@@ -1,7 +1,7 @@
 import { Fragment, React, useContext, useEffect } from 'react'
 import { Redirect } from 'react-router-dom'
 import authContext from "./context/authContext"
-import { socket } from './Socket';
+import { X, socket } from './Socket';
 
 function Console() {
     const wrapStyle = {
@@ -17,6 +17,8 @@ function Console() {
 
     const authCtx = useContext(authContext)
     const { isAuth, authUser, username, logout } = authCtx
+
+    if (isAuth) { X() }
 
     useEffect(() => {
         // authUser()
