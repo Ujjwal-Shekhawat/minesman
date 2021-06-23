@@ -23,7 +23,6 @@ function Console() {
     useEffect(() => {
         // authUser()
         if (isAuth) {
-            console.log("ggwp", isAuth)
             function reconnect() {
                 if (socket.disconnected) {
                     socket.connect();

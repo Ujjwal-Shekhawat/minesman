@@ -16,9 +16,9 @@ function App() {
 
   useEffect(() => {
     // if (isAuth) { X(); }
-    /*  return () => {
+     return () => {
        // cleanup
-     } */
+     }
   }, [])
   return (
     <AuthState>

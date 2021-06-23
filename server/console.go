@@ -124,9 +124,19 @@ func Login(w http.ResponseWriter, r *http.Request) {
 
 func AuthConsole(w http.ResponseWriter, r *http.Request) {
 	fmt.Println("Hitted Auth Endpoint")
-	fmt.Println(r.Header.Get("auth-token"))
-	w.WriteHeader(200)
-	json.NewEncoder(w).Encode(struct {
-		Message string `json:"message"`
-	}{Message: "Lmao"})
+	if r.Header.Get("auth-token") == "lmao_success_boi" {
+		w.WriteHeader(200)
+		resp := struct {
+			Username string `json:"username"`
+			Token    string `json:"token"`
+		}{
+			Username: "kamisama",
+			Token:    "lmao_success_boi",
+		}
+		json.NewEncoder(w).Encode(resp)
+		return
+	} else {
+		w.WriteHeader(405)
+		json.NewEncoder(w).Encode(struct{}{})
+	}
 }
