@@ -19,8 +19,7 @@ export default function Login(props) {
             props.history.push('/console')
         } */
         authUser()
-        console.log(isAuth)
-    }, [isAuth])
+    }, [])
 
     const onChange = (e) => {
         setformData({ ...formData, [e.target.name]: e.target.value })
@@ -37,6 +36,7 @@ export default function Login(props) {
     }
 
     if (isAuth == false || isAuth == null) {
+        { console.log(isAuth) }
         return (
             <div className="container">
                 <form onSubmit={onSubmit}>

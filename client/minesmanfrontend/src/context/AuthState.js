@@ -28,11 +28,11 @@ export default function AuthState(props) {
             setToken(localStorage.token)
         }
         try {
-            const result = axios.get('http://20.197.57.10:8080/console')
+            const result = await axios.get('http://20.197.57.10:8080/console')
             dispatch({ type: 'user_authenticated', payload: result.data })
         } catch (error) {
             dispatch({ type: 'logout' })
-            console.log(error)
+            console.log("auth error")
         }
     }
 
