@@ -9,6 +9,11 @@ import (
 	"github.com/gorilla/handlers"
 )
 
+// Cors releted
+var header = handlers.AllowedHeaders([]string{"X-Requested-With", "Content-Type", "Authorization"})
+var methods = handlers.AllowedMethods([]string{"GET", "POST", "PUT", "HEAD", "OPTIONS"})
+var origins = handlers.AllowedOrigins([]string{"*"})
+
 // export App
 type App struct {
 	Router *mux.Router
@@ -47,5 +52,5 @@ func (app *App) initRoutes() {
 
 func (app *App) run(port string) {
 	fmt.Println("Server started on port : " + port)
-	log.Fatal(http.ListenAndServe(":"+port, handlers.CORS(handlers.AllowedOrigins([]string{"*"}), handlers.AllowedMethods([]string{"*"}))(app.Router)))
+	log.Fatal(http.ListenAndServe(":"+port, handlers.CORS(header, methods, origins)(app.Router)))
 }
