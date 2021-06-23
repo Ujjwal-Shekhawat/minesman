@@ -19,7 +19,7 @@ export default function Login(props) {
             props.history.push('/console')
         } */
         authUser()
-    }, [])
+    }, [isAuth])
 
     const onChange = (e) => {
         setformData({ ...formData, [e.target.name]: e.target.value })
