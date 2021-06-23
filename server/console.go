@@ -123,6 +123,7 @@ func Login(w http.ResponseWriter, r *http.Request) {
 }
 
 func AuthConsole(w http.ResponseWriter, r *http.Request) {
+	w.Header().Set("Content-Type", "application/json")
 	fmt.Println("Hitted Auth Endpoint")
 	if r.Header.Get("auth-token") == "lmao_success_boi" {
 		w.WriteHeader(200)
@@ -137,6 +138,6 @@ func AuthConsole(w http.ResponseWriter, r *http.Request) {
 		return
 	} else {
 		w.WriteHeader(405)
-		json.NewEncoder(w).Encode(struct{}{})
+		json.NewEncoder(w).Encode(struct{IsAuth bool `json:"isAuth"`}{IsAuth: false})
 	}
 }

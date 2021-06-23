@@ -23,8 +23,8 @@ export default function AuthState(props) {
 
     const authUser = async () => {
         console.log("authUser was called")
-        if (localStorage.getItem("token") != null || localStorage.getItem("token") != undefined) {
-            setToken(localStorage.getItem("token"))
+        if (localStorage.token) {
+            setToken(localStorage.token)
         }
         try {
             const result = axios.get('http://20.197.57.10:8080/console')
