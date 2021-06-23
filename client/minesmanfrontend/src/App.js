@@ -2,6 +2,7 @@ import { Fragment, useEffect } from 'react'
 import "./App.css"
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom'
 import AuthState from './context/AuthState'
+import authContext from './context/authContext'
 import Console from './Console'
 import Navbar from './Nav'
 import Login from './Login'
@@ -9,11 +10,15 @@ import Login from './Login'
 import { X } from "./Socket"
 
 function App() {
+
+  const authCtx = authContext
+  const { isAuth } = authCtx
+
   useEffect(() => {
-    X();
-   /*  return () => {
-      // cleanup
-    } */
+    if (isAuth) { X(); }
+    /*  return () => {
+       // cleanup
+     } */
   }, [])
   return (
     <AuthState>
