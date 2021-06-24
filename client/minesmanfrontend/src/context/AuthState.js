@@ -17,6 +17,7 @@ export default function AuthState(props) {
         isAuth: false,
         username: null,
         error: null,
+        loading: true,
     }
 
     const [state, dispatch] = useReducer(authReducer, initState);
@@ -30,8 +31,9 @@ export default function AuthState(props) {
         try {
             const result = await axios.get('https://20.197.57.10:8080/console')
             dispatch({ type: 'user_authenticated', payload: result.data })
+            console.log("Should rerender")
         } catch (error) {
-            // dispatch({ type: 'logout' })
+            dispatch({ type: 'logout' })
             console.log("auth error", error)
         }
     }
@@ -60,6 +62,7 @@ export default function AuthState(props) {
                 isAuth: state.isAuth,
                 username: state.username,
                 error: state.error,
+                loading: state.loading,
                 login,
                 authUser,
                 logout

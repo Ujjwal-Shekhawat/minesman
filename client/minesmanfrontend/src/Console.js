@@ -16,12 +16,12 @@ function Console() {
     ];
 
     const authCtx = useContext(authContext)
-    const { isAuth, authUser, username, logout } = authCtx
+    const { isAuth, authUser, loading, username, logout } = authCtx
 
     if (isAuth && socket == null) { X() }
 
     useEffect(() => {
-        // authUser()
+        authUser()
         if (isAuth && socket != null) {
             function reconnect() {
                 if (socket.disconnected) {
@@ -67,7 +67,7 @@ function Console() {
                 element.scrollTop = element.scrollHeight;
             }
         }
-    }, []);
+    }, [isAuth, loading]);
 
     const sendCommand = (event) => {
         if (event.code === "Enter") {
@@ -97,30 +97,35 @@ function Console() {
         overflowX: 'hidden',
     }
 
-    return (
-        <div>
-            { (isAuth == true) ? <div style={bgStyle}>
-                <main id="container">
-                    <div id="terminal" style={wrapStyle}>
-                        <section id="terminal__body">
-                            <div id="terminal__prompt">
-                            </div>
-                        </section>
-                        <div id='terminal__prompt'>
-                            <label
-                                style={{ color: "transparent", width: "auto", background: "rgba(0, 0, 0, 0.644)", color: "greenyellow", borderColor: "transparent", border: "thin", outline: "transparent", fontFamily: 'Ubuntu Mono', fontSize: "100%", fontWeight: "bold" }}>server console &gt; </label>
-                            <input id="commandBox" type="text" placeholder="command" autoFocus onKeyDown={sendCommand} />
+    const cons = (
+        <div style={bgStyle}>
+            <main id="container">
+                <div id="terminal" style={wrapStyle}>
+                    <section id="terminal__body">
+                        <div id="terminal__prompt">
                         </div>
+                    </section>
+                    <div id='terminal__prompt'>
+                        <label
+                            style={{ color: "transparent", width: "auto", background: "rgba(0, 0, 0, 0.644)", color: "greenyellow", borderColor: "transparent", border: "thin", outline: "transparent", fontFamily: 'Ubuntu Mono', fontSize: "100%", fontWeight: "bold" }}>server console &gt; </label>
+                        <input id="commandBox" type="text" placeholder="command" autoFocus onKeyDown={sendCommand} />
                     </div>
-                    {/* <button onClick={Disconnect}>logoff</button> */}
-                </main>
-            </div>
-                :
-                <Fragment>
-                    <Redirect to='/' />
-                </Fragment>
-            }
+                </div>
+                {/* <button onClick={Disconnect}>logoff</button> */}
+            </main>
         </div>
+    )
+
+    const redirect = (
+        <div>
+            <Redirect to='/' />
+        </div>
+    )
+
+    return (
+        <Fragment>
+            {(isAuth == true && !loading) ? cons : (!loading) ? redirect : <h1>Loading</h1>}
+        </Fragment>
     )
 }
 

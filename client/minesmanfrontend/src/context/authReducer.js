@@ -6,12 +6,15 @@ export default (state, action) => {
                 ...state,
                 ...action.payload,
                 isAuth: true,
+                loading: false,
             })
         case 'user_authenticated':
             return ({
                 ...state,
                 ...action.payload,
-                username: action.payload
+                username: action.payload,
+                isAuth: true,
+                loading: false,
             })
         case 'logout':
             localStorage.removeItem('token')
@@ -19,7 +22,8 @@ export default (state, action) => {
                 ...state,
                 token: null,
                 isAuth: false,
-                username: null
+                username: null,
+                loading: false,
             })
         default:
             return state
