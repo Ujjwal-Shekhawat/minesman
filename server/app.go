@@ -52,5 +52,5 @@ func (app *App) initRoutes() {
 
 func (app *App) run(port string) {
 	fmt.Println("Server started on port : " + port)
-	log.Fatal(http.ListenAndServe(":"+port, handlers.CORS(header, methods, origins)(app.Router)))
+	log.Fatal(http.ListenAndServeTLS(":"+port,"cert.crt", "cert.key", handlers.CORS(header, methods, origins)(app.Router)))
 }
