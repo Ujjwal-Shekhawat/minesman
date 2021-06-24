@@ -60,6 +60,6 @@ func (app *App) run(port string) {
 		AllowCredentials: true,
 		OptionsPassthrough: false,
 	})
-	handler := cors.Default().Handler(app.Router)
+	handler := c.Handler(app.Router)
 	log.Fatal(http.ListenAndServeTLS(":"+port, "cert.crt", "cert.key", handler))
 }
