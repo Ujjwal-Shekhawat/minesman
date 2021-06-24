@@ -7,9 +7,10 @@ import (
 
 	"github.com/gorilla/handlers"
 	"github.com/gorilla/mux"
+	"github.com/rs/cors"
 )
 
-// Cors releted
+// Cors releted not currently in use ignore
 var header = handlers.AllowedHeaders([]string{"X-Requested-With", "Content-Type", "Authorization"})
 var methods = handlers.AllowedMethods([]string{"GET", "POST", "PUT", "HEAD", "OPTIONS"})
 var origins = handlers.AllowedOrigins([]string{"localhost:3000", "*"})
@@ -52,5 +53,13 @@ func (app *App) initRoutes() {
 
 func (app *App) run(port string) {
 	fmt.Println("Server started on port : " + port)
-	log.Fatal(http.ListenAndServeTLS(":"+port,"cert.crt", "cert.key", handlers.CORS(header, methods, origins)(app.Router)))
+	c := cors.New(cors.Options{
+		AllowedOrigins: []string{"*"},
+		AllowedMethods: []string{"GET", "POST", "PUT", "DELETE", "OPTIONS"},
+		AllowedHeaders: []string{"*"},
+		AllowCredentials: true,
+		OptionsPassthrough: false,
+	})
+	handler := cors.Default().Handler(app.Router)
+	log.Fatal(http.ListenAndServeTLS(":"+port, "cert.crt", "cert.key", handler))
 }
