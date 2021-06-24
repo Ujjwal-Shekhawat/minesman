@@ -6,6 +6,7 @@ import (
 	"log"
 	"net/http"
 	"os"
+	"strings"
 	"time"
 
 	socketio "github.com/googollee/go-socket.io"
@@ -23,7 +24,7 @@ var allowOriginFunc = func(r *http.Request) bool {
 	return true
 }
 
-// TODO : Make a log parser
+// TODO : Make a log parser and do something about restarts and server states in frontend also if mood permits organize this code
 func main() {
 	// Console
 	Xonsole = InitConsole()
@@ -59,18 +60,8 @@ func serveAll() {
 	server.OnConnect("/", func(s socketio.Conn) error {
 		s.SetContext("")
 		log.Println("connected:", s.ID())
-		// Change this to be like rff or something else
-		/* go func() {
-			for {
-				if x, err := Xonsole.ReadLine(); err != io.EOF {
-					fmt.Println(x)
-					s.Emit("reply", x)
-				} else {
-				}
-			}
-		}() */
 		s.Emit("reply", "Successfully Connected 😀")
-		s.Emit("reply", "Successfully Connected 😀")
+		s.Emit("reply", "Type help for more info")
 		(*socketConns)[s.ID()] = s
 		return nil
 	})
@@ -85,7 +76,7 @@ func serveAll() {
 			// Xonsole = nil Dont know but this line causes memory error
 			Xonsole = InitConsole()
 			Xonsole.Cmd.Start()
-		} else if msg == "stop" {
+		} else if msg == "stop" || msg == "/stop" {
 			Xonsole.ExecCommand("stop")
 			// TODO : maybe check for eof then decrement waitgroup and terminate the loop and exit gracefully
 			time.Sleep(5 * time.Second)
@@ -99,15 +90,11 @@ func serveAll() {
 		}
 	})
 
-	/* server.OnEvent("/", "msg", func(s socketio.Conn, msg string) string {
-		s.SetContext(msg)
-		return "recv " + msg
-	}) */
-
 	server.OnEvent("/", "bye", func(s socketio.Conn) string {
 		last := s.Context().(string)
 		s.Emit("bye", last)
 		s.Close()
+		fmt.Println("Socket Connection Closed")
 		return last
 	})
 
@@ -133,10 +120,35 @@ func serveAll() {
 	}
 }
 
+const (
+	Starting          = iota // Preparing
+	Stopping                 // Saving
+	Restarting               // Custom
+	Online                   // help
+	Offline                  // Xonsole is nil also give this a littlebit of a thought can be EOF but meh that not good
+	FailedPortBinding        // FAILED TO BIND TO PORT
+	UnknownError             // Think of it
+)
+
+func parselogs(x string) {
+	out := strings.Split(x, ":")
+	toParse := out[len(out)-1]
+	fmt.Println(toParse)
+	if strings.Contains(toParse, "Done") {
+		fmt.Println("Satrted server successfully!!")
+	} else if strings.Contains(toParse, "EULA") {
+		fmt.Println("You havent agreed to eula first agree to eula. Stopping server now")
+	} else if strings.Contains(toParse, "FAILED TO BIND TO PORT") {
+		fmt.Println("Perhaps another server instance is runnig stop that first")
+	}
+}
+
 func handlesocketConns(sockets *map[string]socketio.Conn) {
 	for {
 		if x, err := Xonsole.ReadLine(); err != io.EOF {
-			fmt.Println(x, " ", len(*sockets))
+			// fmt.Println(x, " ", len(*sockets))
+			parselogs(x)
+			fmt.Println(len(*sockets))
 			for _, value := range *sockets {
 				value.Emit("reply", x)
 			}

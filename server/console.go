@@ -10,8 +10,6 @@ import (
 	"os"
 	"os/exec"
 	"time"
-
-	"github.com/gorilla/mux"
 )
 
 type javaproc interface {
@@ -93,24 +91,53 @@ func (c *Console) ReadLine() (s string, err error) {
 }
 
 // Routes releated
-func ServerCommand(w http.ResponseWriter, r *http.Request) {
+type Ts struct {
+	Username string `json:"username"`
+	Password string `json:"password"`
+}
+
+func Login(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
+	decoder := json.NewDecoder(r.Body)
+	var resBody Ts
 
-	file, err := os.OpenFile("serverlogs.txt", os.O_APPEND|os.O_CREATE|os.O_WRONLY, 0666)
-	if err != nil {
-		log.Fatal(err)
+	if err := decoder.Decode(&resBody); err != nil {
+		log.Fatal(err.Error())
 	}
-	defer file.Close()
-	log.SetOutput(file)
-	log.Println("Recived a command from client")
-
-	params := mux.Vars(r)
-	command := params["command"]
-
-	Xonsole.ExecCommand(command)
 
 	resp := struct {
-		Message string `json:"message"`
-	}{Message: "This is still incomplete but the command " + command + " was executed successfully"}
-	json.NewEncoder(w).Encode(resp)
+		Username string `json:"username"`
+		Token    string `json:"token"`
+	}{
+		Username: "kamisama",
+		Token:    "lmao_success_boi",
+	}
+	if resBody.Username == "kamisama" && resBody.Password == "kamisama" {
+		json.NewEncoder(w).Encode(resp)
+		return
+	} else {
+		// no token for ya
+		w.WriteHeader(401)
+		json.NewEncoder(w).Encode(struct{}{})
+	}
+}
+
+func AuthConsole(w http.ResponseWriter, r *http.Request) {
+	w.Header().Set("Content-Type", "application/json")
+	fmt.Println("Hitted Auth Endpoint")
+	if r.Header.Get("auth-token") == "lmao_success_boi" {
+		w.WriteHeader(200)
+		resp := struct {
+			Username string `json:"username"`
+			Token    string `json:"token"`
+		}{
+			Username: "kamisama",
+			Token:    "lmao_success_boi",
+		}
+		json.NewEncoder(w).Encode(resp)
+		return
+	} else {
+		w.WriteHeader(405)
+		json.NewEncoder(w).Encode(struct{IsAuth bool `json:"isAuth"`}{IsAuth: false})
+	}
 }

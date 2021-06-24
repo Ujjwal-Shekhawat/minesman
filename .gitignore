@@ -1,3 +1,4 @@
+server/cert.*
 server/serverfiles/*
 server/serverlogs.txt
 server/sw
