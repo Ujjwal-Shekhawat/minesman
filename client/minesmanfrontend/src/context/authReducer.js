@@ -13,7 +13,7 @@ export default (state, action) => {
                 ...state,
                 ...action.payload,
                 username: action.payload,
-                isAuth: true,
+                // isAuth: true,
                 loading: false,
             })
         case 'logout':

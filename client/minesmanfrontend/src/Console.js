@@ -21,7 +21,9 @@ function Console() {
     if (isAuth && socket == null) { X() }
 
     useEffect(() => {
-        authUser()
+        if (localStorage.token) {
+            authUser()
+        }
         if (isAuth && socket != null) {
             function reconnect() {
                 if (socket.disconnected) {
@@ -124,7 +126,8 @@ function Console() {
 
     return (
         <Fragment>
-            {(isAuth == true && !loading) ? cons : (!loading) ? redirect : <h1>Loading</h1>}
+            {console.log(isAuth)}
+            {(isAuth == true && !loading) ? cons : (!loading) ? redirect : redirect}
         </Fragment>
     )
 }
