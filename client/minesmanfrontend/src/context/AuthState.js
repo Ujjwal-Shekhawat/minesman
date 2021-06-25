@@ -23,9 +23,11 @@ export default function AuthState(props) {
     const [state, dispatch] = useReducer(authReducer, initState);
 
     const authUser = async () => {
-        console.log("authUser was called")
+        // console.log("authUser was called")
         if (localStorage.token) {
             setToken(localStorage.token)
+        } else {
+            setToken()
         }
         try {
             const result = await axios.get('https://20.197.57.10:8080/console')

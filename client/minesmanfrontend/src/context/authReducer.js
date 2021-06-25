@@ -19,7 +19,8 @@ export default (state, action) => {
         case 'logout':
             localStorage.removeItem('token')
             return ({
-                ...state,
+                isAuth: false,
+                // ...state,
                 token: null,
                 isAuth: false,
                 username: null,

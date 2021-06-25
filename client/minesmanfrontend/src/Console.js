@@ -22,6 +22,7 @@ function Console() {
 
     useEffect(() => {
         authUser()
+        console.log("authUser from called from Console")
         if (isAuth && socket != null) {
             function reconnect() {
                 if (socket.disconnected) {
@@ -125,7 +126,7 @@ function Console() {
     return (
         <Fragment>
             {console.log(isAuth)}
-            {(isAuth == true && !loading) ? cons : (!loading) ? redirect : redirect}
+            {(isAuth == true && !loading) ? cons : (!loading) ? redirect : <h1>loading</h1>}
         </Fragment>
     )
 }
