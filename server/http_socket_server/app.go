@@ -1,4 +1,4 @@
-package main
+package server
 
 import (
 	"fmt"
@@ -6,15 +6,9 @@ import (
 	"net/http"
 
 	"github.com/Ujjwal-Shekhawat/minesman/routes"
-	"github.com/gorilla/handlers"
 	"github.com/gorilla/mux"
 	"github.com/rs/cors"
 )
-
-// Cors releted not currently in use ignore
-var header = handlers.AllowedHeaders([]string{"X-Requested-With", "Content-Type", "Authorization"})
-var methods = handlers.AllowedMethods([]string{"GET", "POST", "PUT", "HEAD", "OPTIONS"})
-var origins = handlers.AllowedOrigins([]string{"localhost:3000", "*"})
 
 // export App
 type App struct {
@@ -26,7 +20,6 @@ type Middleware func(http.HandlerFunc) http.HandlerFunc
 
 func Middlewares(f http.HandlerFunc, middlewares ...Middleware) http.HandlerFunc {
 	if len(middlewares) < 1 {
-		routes.X()
 		return f
 	}
 
@@ -48,8 +41,8 @@ func logger(handler http.HandlerFunc) http.HandlerFunc {
 
 func (app *App) initRoutes() {
 	app.Router = mux.NewRouter()
-	app.Router.HandleFunc("/", Login).Methods("POST", "OPTIONS")
-	app.Router.HandleFunc("/console", AuthConsole).Methods("GET", "OPTIONS")
+	app.Router.HandleFunc("/", routes.Login).Methods("POST", "OPTIONS")
+	app.Router.HandleFunc("/console", routes.AuthConsole).Methods("GET", "OPTIONS")
 	// app.Router.Handle("/", http.FileServer(http.Dir("./asset")))
 }
 
