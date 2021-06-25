@@ -1,4 +1,4 @@
-module github.com/Ujjwal-Shekhawat/minesman1.0
+module github.com/Ujjwal-Shekhawat/minesman
 
 go 1.16
 

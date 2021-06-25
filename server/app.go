@@ -5,6 +5,7 @@ import (
 	"log"
 	"net/http"
 
+	"github.com/Ujjwal-Shekhawat/minesman/routes"
 	"github.com/gorilla/handlers"
 	"github.com/gorilla/mux"
 	"github.com/rs/cors"
@@ -25,6 +26,7 @@ type Middleware func(http.HandlerFunc) http.HandlerFunc
 
 func Middlewares(f http.HandlerFunc, middlewares ...Middleware) http.HandlerFunc {
 	if len(middlewares) < 1 {
+		routes.X()
 		return f
 	}
 
@@ -54,10 +56,10 @@ func (app *App) initRoutes() {
 func (app *App) run(port string) {
 	fmt.Println("Server started on port : " + port)
 	c := cors.New(cors.Options{
-		AllowedOrigins: []string{"*"},
-		AllowedMethods: []string{"GET", "POST", "PUT", "DELETE", "OPTIONS"},
-		AllowedHeaders: []string{"*"},
-		AllowCredentials: true,
+		AllowedOrigins:     []string{"*"},
+		AllowedMethods:     []string{"GET", "POST", "PUT", "DELETE", "OPTIONS"},
+		AllowedHeaders:     []string{"*"},
+		AllowCredentials:   true,
 		OptionsPassthrough: false,
 	})
 	handler := c.Handler(app.Router)

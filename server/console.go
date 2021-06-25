@@ -90,7 +90,7 @@ func (c *Console) ReadLine() (s string, err error) {
 	return
 }
 
-// Routes releated
+// Auth releated must be in auth.go
 type Ts struct {
 	Username string `json:"username"`
 	Password string `json:"password"`
@@ -116,7 +116,6 @@ func Login(w http.ResponseWriter, r *http.Request) {
 		json.NewEncoder(w).Encode(resp)
 		return
 	} else {
-		// no token for ya
 		w.WriteHeader(401)
 		json.NewEncoder(w).Encode(struct{}{})
 	}
@@ -139,7 +138,7 @@ func AuthConsole(w http.ResponseWriter, r *http.Request) {
 		json.NewEncoder(w).Encode(resp)
 		return
 	} else {
-		w.WriteHeader(405)
+		w.WriteHeader(401)
 		json.NewEncoder(w).Encode(struct {
 			IsAuth bool `json:"isAuth"`
 		}{IsAuth: false})
