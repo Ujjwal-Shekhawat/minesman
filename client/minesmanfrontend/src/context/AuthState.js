@@ -13,11 +13,11 @@ const setToken = (token) => {
 
 export default function AuthState(props) {
     const initState = {
-        token: localStorage.getItem('token'),
+        token: localStorage.getItem('token', null),
         isAuth: false,
         username: null,
         error: null,
-        loading: true,
+        loading: false,
     }
 
     const [state, dispatch] = useReducer(authReducer, initState);
@@ -25,13 +25,12 @@ export default function AuthState(props) {
     const authUser = async () => {
         console.log("authUser was called")
         if (localStorage.token) {
-            console.log(localStorage.token)
             setToken(localStorage.token)
         }
         try {
             const result = await axios.get('https://20.197.57.10:8080/console')
             dispatch({ type: 'user_authenticated', payload: result.data })
-            console.log("Should rerender")
+            console.log(result.data)
         } catch (error) {
             dispatch({ type: 'logout' })
             console.log("auth error", error)

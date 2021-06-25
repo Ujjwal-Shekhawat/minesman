@@ -15,11 +15,9 @@ export default function Login(props) {
     const { login, isAuth, authUser, loading } = authCtx
 
     useEffect(() => {
-        /* if (isAuth) {
-            props.history.push('/console')
-        } */
-        authUser()
-    }, [isAuth, loading])
+        authCtx.authUser()
+        console.log("use effect called from login")
+    }, [isAuth])
 
     const onChange = (e) => {
         setformData({ ...formData, [e.target.name]: e.target.value })
@@ -53,13 +51,14 @@ export default function Login(props) {
 
     const redirect = (
         <div>
-            <Redirect to='console' />
+            <Redirect to='/console' />
         </div>
     )
 
     return (
-        <Fragment>
+        <div>
+            {console.log("im rerendering")}
             {(isAuth == true && !loading) ? redirect : (!loading) ? lform : <h1>Loading</h1>}
-        </Fragment>
+        </div>
     )
 }

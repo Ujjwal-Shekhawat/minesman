@@ -21,9 +21,7 @@ function Console() {
     if (isAuth && socket == null) { X() }
 
     useEffect(() => {
-        if (localStorage.token) {
-            authUser()
-        }
+        authUser()
         if (isAuth && socket != null) {
             function reconnect() {
                 if (socket.disconnected) {
