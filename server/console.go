@@ -130,14 +130,18 @@ func AuthConsole(w http.ResponseWriter, r *http.Request) {
 		resp := struct {
 			Username string `json:"username"`
 			Token    string `json:"token"`
+			IsAuth   bool   `json:"isAuth"`
 		}{
 			Username: "kamisama",
 			Token:    "lmao_success_boi",
+			IsAuth:   true,
 		}
 		json.NewEncoder(w).Encode(resp)
 		return
 	} else {
 		w.WriteHeader(405)
-		json.NewEncoder(w).Encode(struct{IsAuth bool `json:"isAuth"`}{IsAuth: false})
+		json.NewEncoder(w).Encode(struct {
+			IsAuth bool `json:"isAuth"`
+		}{IsAuth: false})
 	}
 }
