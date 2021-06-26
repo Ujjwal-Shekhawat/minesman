@@ -10,6 +10,8 @@ import (
 	"time"
 )
 
+var Xonsole *map[string](*Console) = &map[string](*Console){}
+
 type javaproc interface {
 	Stdout() io.ReadCloser
 	Stdin() io.WriteCloser

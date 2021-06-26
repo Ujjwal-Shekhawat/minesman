@@ -65,6 +65,7 @@ func StartServer(Xonsole *map[string](*console.Console)) {
 		} else if msg == "stop" || msg == "/stop" {
 			(*Xonsole)["exp"].ExecCommand("stop")
 			// TODO : maybe check for eof then decrement waitgroup and terminate the loop and exit gracefully
+			// TODO before the above TODO : check state of the server and if its stopped exit after 2 secs
 			time.Sleep(5 * time.Second)
 			(*Xonsole)["exp"].Cmd.Process.Kill()
 			s.Emit("reply", "Shutting down server disconnected contact admin if you need to restart")
